@@ -1,0 +1,9 @@
+.logo {
+    height: 100px;
+    /* width:  300px; */
+    /* background: rgba(255, 255, 255, 0.2); */
+    margin: 16px;
+    background: url('../images/xiongmao.jpg') no-repeat center ;
+    background-size:100px 100px;
+    /* background-repeat:no-repeat center ; */
+}

@@ -1,0 +1,22 @@
+.author-div{
+    text-align: center;
+    padding: 1rem;
+
+}
+.author-name{
+    font-size: 1.5rem;
+    color: rgba(94, 11, 228, 0.541);
+}
+.author-div div{
+    margin-bottom: 1rem;
+
+}
+.author-introduction{
+    font-size:.8rem;
+    color: #999;
+}
+.account{
+    background-color: rgb(17, 170, 132);
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
