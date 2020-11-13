@@ -1,8 +1,10 @@
 const Router = require('koa-router')
 const router = new Router()
 
-router.get("http://localhost:3000/index",(req,res)=>{
-    ctx.body = res.query
+router.get("/index",(ctx,next)=>{
+    ctx.body = {
+        key:"123"
+    }
 })
 
 module.exports = router;
