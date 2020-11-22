@@ -2,7 +2,7 @@
 const env = process.env.NODE_ENV
 
 // 配置
-const MYSQL_CONF
+let MYSQL_CONF = {}
 
 if (env === 'dev') {
   MYSQL_CONF = {

@@ -1,5 +1,3 @@
-const { rejects } = require('assert')
-const { resolve } = require('path')
 const querystring = require('querystring')
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
@@ -16,8 +14,8 @@ const getPostData = (req) => {
       return
     }
     let postData = ''
-    req.on('data', thunk => {
-      postData += thunk.toString()
+    req.on('data', data => {
+      postData += data.toString()
     })
     req.on('end', () => {
       if (!postData) {
@@ -53,21 +51,32 @@ const serverHandle = (req, res) => {
     //   )
     //   return
     // }
-    const blogResult =handleBlogRouter(req, res)
-    if(blogResult){
-      blogResult.then(blogData=>{
+    const blogResult = handleBlogRouter(req, res)
+    if (blogResult) {
+      blogResult.then(blogData => {
         res.end(
           JSON.stringify(blogData)
         )
       })
       return
-    } 
+    }
+
+
     //处理user路由
-    const userData = handleUserRouter(req, res)
-    if (userData) {
-      res.end(
-        JSON.stringify(userData)
-      )
+    // const userData = handleUserRouter(req, res)
+    // if (userData) {
+    //   res.end(
+    //     JSON.stringify(userData)
+    //   )
+    //   return
+    // }
+    const userResult = handleUserRouter(req, res)
+    if (userResult) {
+      userResult.then(userData => {
+        res.end(
+          JSON.stringify(userData)
+        )
+      })
       return
     }
     // 未命中路由
@@ -78,6 +87,8 @@ const serverHandle = (req, res) => {
 
 
 }
+
+
 module.exports = serverHandle
 
 
