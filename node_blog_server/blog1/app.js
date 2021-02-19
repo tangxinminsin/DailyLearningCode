@@ -15,13 +15,16 @@ const getPostData = (req) => {
     }
     let postData = ''
     req.on('data', data => {
+      console.log("data:", data)
       postData += data.toString()
+      console.log("postData:", postData)
     })
     req.on('end', () => {
       if (!postData) {
         resolve({})
         return
       }
+      console.log("JSON", JSON.parse(postData))
       resolve(
         JSON.parse(postData)
       )
@@ -52,6 +55,7 @@ const serverHandle = (req, res) => {
     //   return
     // }
     const blogResult = handleBlogRouter(req, res)
+    console.log("blogResult", blogResult)
     if (blogResult) {
       blogResult.then(blogData => {
         res.end(

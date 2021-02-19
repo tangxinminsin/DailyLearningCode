@@ -11,7 +11,7 @@ const exec = (sql)=> {
         reject(err)
         return
       }
-      console.log(result)
+      console.log("db/mysql:",result)
       resolve(result)
     })
   })
