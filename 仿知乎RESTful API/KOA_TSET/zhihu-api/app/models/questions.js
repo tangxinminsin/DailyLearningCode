@@ -1,0 +1,13 @@
+const mongoose = require('mongoose')
+
+const { Schema, model } = mongoose
+
+const questionModel = new Schema({
+  __v: { type: Number, select: false },//查询时隐藏__v字段
+  title: { type: String, required: true },
+  description: { type: String, required: false },
+  questioner: { type: Schema.Types.ObjectId, ref: 'User', required: true, select: false },
+  topics: { type: [{ type: Schema.Types.ObjectId, ref: 'Topic' }], required: false, select: false }
+}, { timestamps: true })
+
+module.exports = model('Question', questionModel)
