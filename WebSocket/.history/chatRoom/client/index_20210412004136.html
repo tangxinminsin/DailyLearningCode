@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chatRoom</title>
+  <script src='https://cdn.staticfile.org/vue/2.6.9/vue.min.js'></script>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <ul>
+        <li v-for="(item,index) in lists" :key="'message'+index">{{item}}</li>
+      </ul>
+    </div>
+    <div class="footer">
+      {{message}}
+      <input type="text" v-model='message'>
+      <button type="button" id="send" @click="send()">发送</button>
+    </div>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: '',
+        lists: [],
+        ws: {}
+      },
+      methods: {
+        onOpen: () => {
+          console.log('onopen:' + this.ws.readyState)
+        },
+        // 接收服务端返回信息
+        onMessage: (event) => {
+          console.log('onmessage:' + this.ws.readyState)
+          // 将消息推送到lists中
+          this.lists.push(event.data)
+        },
+        onClose: () => {
+          console.log('close:' + this.ws.readyState)
+          console.log('WebSocket关闭')
+        },
+        //发送消息
+        send: () => {
+          this.lists.push(this.message)
+          this.ws.send('click:' + this.message)
+          this.message = ''
+        }
+      },
+      mounted() {
+        this.ws = new WebSocket('ws://127.0.0.1:3030')
+        console.log(this.ws)
+        this.ws.onopen = this.onOpen
+        this.ws.onmessage = this.onMessage
+        this.ws.onclose = this.onClose
+        this.ws.onerror = this.onError
+      }
+    })
+
+
+    // document.getElementById('send').addEventListener('click', () => {
+    //   const msgValue = document.getElementById('msg').value
+    //   ws.send(msgValue)
+    //   document.getElementById('msg').value = ''
+    // })
+    // document.getElementById('close').addEventListener('click', () => {
+    //   ws.close()
+    // })
+  </script>
+</body>
+
+</html>

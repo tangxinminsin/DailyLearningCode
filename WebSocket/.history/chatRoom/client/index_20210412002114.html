@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chatRoom</title>
+  <script src='https://cdn.staticfile.org/vue/0.10.0/vue.min.js'></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <div class="container">
+      <ul>
+        <li v-for='(item,index) in lists' :key="'message'+index"></li>
+      </ul>
+    </div>
+    <div class="footer">
+      <input type="text" id='message'>
+      <button type="button" id="send">发送</button>
+    </div>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: '',
+        lists: []
+      },
+      methods: {
+
+      }
+    })
+    const ws = new WebSocket('ws://127.0.0.1:3030')
+
+    ws.onopen = () => {
+      console.log('onopen:', ws.readyState)
+    }
+    // 接收服务端返回信息
+    ws.onmessage = (event) => {
+      console.log('onmessage:', ws.readyState)
+      console.log(event.data)
+    }
+    ws.onclose = () => {
+      console.log('close:', ws.readyState)
+      console.log('WebSocket关闭')
+    }
+    // error事件
+    ws.onerror = () => {
+      console.log('error:', ws.readyState)
+    }
+    //发送消息
+    document.getElementById('send').addEventListener('click', () => {
+      const msgValue = document.getElementById('msg').value
+      ws.send(msgValue)
+      document.getElementById('msg').value = ''
+    })
+    document.getElementById('close').addEventListener('click', () => {
+      ws.close()
+    })
+  </script>
+</body>
+
+</html>

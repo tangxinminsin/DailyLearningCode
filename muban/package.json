@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "cross-env ACTIVE_PROFILE=dev umi dev",
+    "start:pre": "cross-env ACTIVE_PROFILE=pre umi dev",
+    "build": "cross-env ACTIVE_PROFILE=prod umi build",
+    "build:pre": "cross-env ACTIVE_PROFILE=pre umi build",
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "^6.5.0",
+    "@umijs/preset-react": "1.x",
+    "axios": "^0.21.1",
+    "hash.js": "^1.1.7",
+    "umi": "3.3.4"
+  },
+  "devDependencies": {
+    "babel-plugin-react-css-modules": "^5.2.6",
+    "cross-env": "^7.0.3",
+    "lint-staged": "^10.0.7",
+    "postcss-less": "^4.0.0",
+    "prettier": "^2.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "yorkie": "^2.0.0"
+  }
+}

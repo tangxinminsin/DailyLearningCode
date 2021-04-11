@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.io</title>
+  <script crossorigin="anonymous" src="https://lib.baomitu.com/socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+
+<body>
+  <h1>Socket.io</h1>
+  <input type="text" id='msg'>
+  <button type='button' id='btn'>发送</button>
+  <script>
+    const socket = io()
+
+    document.getElementById('btn').addEventListener('click', () => {
+      const value = document.getElementById('msg').value
+      socket.emit('chatEvent', value)
+      document.getElementById('msg').value = ''
+    })
+
+    socket.on('message', (msg) => {
+      console.log(msg)
+    })
+  </script>
+</body>
+
+</html>
