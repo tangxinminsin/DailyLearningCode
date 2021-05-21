@@ -8,6 +8,8 @@ const checkQuestionExist = require('../middleware/checkQuestionExist')
 const checkQuestioner = require('../middleware/checkQuestioner')
 
 const auth = jwt({ secret })
+
+
 router.get('/', find)
 router.get('/:id', checkQuestionExist, findById)
 router.post('/', auth, create)

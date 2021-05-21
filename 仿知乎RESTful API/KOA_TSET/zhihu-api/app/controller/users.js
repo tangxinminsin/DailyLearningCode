@@ -3,6 +3,8 @@ const User = require('../models/users')
 const Question = require('../models/questions')
 const Answer = require('../models/answers')
 const { secret } = require('../config')
+const responesData = require('../utils/responesData')
+
 class UsersCtl {
 
   // 登录
@@ -17,8 +19,8 @@ class UsersCtl {
       ctx.throw(401, "用户名或密码不正确!")
     }
     const { _id, username } = user
-    const token = jsonwebtoken.sign({ _id, username }, secret, { expiresIn: '1d' })//expiresIn有效期
-    ctx.body = { token }
+    const token = jsonwebtoken.sign({ _id, username }, secret, { expiresIn: '30d' })//
+    ctx.body = responesData({ token, id: _id }, token)
   }
   // 查询所有用户
   async find(ctx) {
@@ -49,7 +51,7 @@ class UsersCtl {
     if (!user) {
       ctx.throw(404, "用户不存在！")
     }
-    ctx.body = user
+    ctx.body = ctx.body = responesData(user)
   };
   // 创建用户
   async create(ctx) {
@@ -64,7 +66,7 @@ class UsersCtl {
       ctx.throw(409, "用户名已存在！")
     }
     const user = await new User(ctx.request.body).save()
-    ctx.body = user
+    ctx.body = responesData(user)
   };
   // 更新用户信息
   async update(ctx) {
@@ -81,7 +83,7 @@ class UsersCtl {
     if (!user) {
       ctx.throw(404, "用户不存在！")
     }
-    ctx.body = user
+    ctx.body = responesData(user)
   };
   // 删除用户
   async detele(ctx) {
@@ -136,7 +138,8 @@ class UsersCtl {
       myFollowList.followingTopics.push(ctx.params.id)
       myFollowList.save()
     }
-    ctx.status = 204
+    // ctx.status = 204
+    ctx.body = responesData()
   }
   // 取消关注话题
   async unFollowTopic(ctx) {
@@ -148,7 +151,8 @@ class UsersCtl {
       myFollowList.followingTopics.splice(index, 1)
       myFollowList.save()
     }
-    ctx.status = 204
+    // ctx.status = 204
+    ctx.body = responesData()
   }
   // 某个用户关注的话题列表
   async listFollowingTopic(ctx) {
@@ -156,12 +160,12 @@ class UsersCtl {
     if (!user) {
       ctx.throw(404, "用户不存在")
     }
-    ctx.body = user.followingTopics
+    ctx.body = responesData(user.followingTopics)
   }
   // 用户提问列表
   async listQuestion(ctx) {
     const question = await Question.find({ questioner: ctx.params.id })
-    ctx.body = question
+    ctx.body = responesData(question)
   }
   // 赞回答
   async likingAnsers(ctx, next) {

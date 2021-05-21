@@ -1,5 +1,5 @@
 const Answers = require('../models/answers')
-
+const responesData = require('../utils/responesData')
 class TopicsCtl {
   // 查询回答
   async find(ctx) {
@@ -9,11 +9,21 @@ class TopicsCtl {
     const newPageSize = Math.max(pageSize * 1, 1)
     const newCurrent = Math.max(current * 1, 1) - 1
     const keyword = new RegExp(q)
+    const count = await Answers
+      .find({ content: keyword, questionId: ctx.params.questionId }).count()
     const answer = await Answers
       .find({ content: keyword, questionId: ctx.params.questionId })//模糊搜索
       .limit(newPageSize)
+      .sort({ updatedAt: -1 })
+      .populate('answerer')
       .skip(newCurrent * newPageSize)
-    ctx.body = answer
+    ctx.body = responesData({
+      data: answer,
+      pageSize: pageSize,
+      current: current,
+      total: count
+    })
+
   }
   // 根据ID查询特定回答
   async findById(ctx) {
@@ -23,7 +33,7 @@ class TopicsCtl {
     if (!answer) {
       ctx.throw(404, "回答不存在！")
     }
-    ctx.body = answer
+    ctx.body = responesData(answer)
   }
   // 创建回答
   async create(ctx) {
@@ -33,7 +43,7 @@ class TopicsCtl {
     const answerer = ctx.state.user._id
     const questionId = ctx.params.questionId
     const answer = await new Answers({ ...ctx.request.body, answerer, questionId }).save()
-    ctx.body = answer
+    ctx.body = responesData(answer)
   }
   // 更新回答
   async update(ctx) {

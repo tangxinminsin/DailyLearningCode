@@ -13,6 +13,7 @@ const checkOwner = require('../middleware/checkOwner')
 //jsonwebtoken鉴权-认证
 // const auth = async (ctx, next) => {
 //   const { authorization = '' } = ctx.request.header
+//   console.log(authorization)
 //   const token = authorization.replace('Bearer ', '')//Bearer后面有一个空格
 //   try {
 //     const user = jsonwebtoken.verify(token, secret)
@@ -23,6 +24,7 @@ const checkOwner = require('../middleware/checkOwner')
 //   await next();
 // }
 const auth = jwt({ secret })//koa-jwt 鉴权
+
 router.get('/', find)
 router.get('/:id', findById)
 router.post('/', create)

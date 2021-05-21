@@ -12,7 +12,7 @@ const app = new Koa()//实例化
 app.use(async (ctx, next) => {
   await next();
   const rt = ctx.response.get('X-Response-Time');
-  console.log("1",`${ctx.method} ${ctx.url} - ${rt}`);
+  console.log("1", `${ctx.method} ${ctx.url} - ${rt}`);
 });
 
 // x-response-time
@@ -30,6 +30,6 @@ app.use(async ctx => {
   ctx.body = 'Hello World';
 });
 
-app.listen(3000,()=>{
+app.listen(3000, () => {
   console.log("http://localhost:3000")
 })

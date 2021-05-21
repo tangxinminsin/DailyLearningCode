@@ -1,5 +1,6 @@
 const Comment = require('../models/comments')
-
+const Answers = require('../models/answers')
+const responesData = require('../utils/responesData')
 class TopicsCtl {
   // 查询评论
   async find(ctx) {
@@ -11,11 +12,11 @@ class TopicsCtl {
     const keyword = new RegExp(q)
     const { questionId, answerId } = ctx.params
     const comment = await Comment
-      .find({ content: keyword, questionId, answerId, rootCommentId })
+      .find({ content: keyword, questionId, answerId })
       .limit(newPageSize)
       .skip(newCurrent * newPageSize)
       .populate('commentator replayTo')
-    ctx.body = comment
+    ctx.body = responesData(comment)
   }
   // 根据ID查询特定评论
   async findById(ctx) {
@@ -37,7 +38,13 @@ class TopicsCtl {
     const commentator = ctx.state.user._id
     const { questionId, answerId } = ctx.params
     const comment = await new Comment({ ...ctx.request.body, commentator, questionId, answerId }).save()
-    ctx.body = comment
+    // 问题评论数
+    const count = await Comment.find({ questionId, answerId }).count()
+    console.log(count)
+    const AnswerInfo = await Answers.findById(answerId)
+    AnswerInfo.commentCount = AnswerInfo.commentCount + 1
+    AnswerInfo.save()
+    ctx.body = responesData(comment)
   }
   // 更新评论
   async update(ctx) {

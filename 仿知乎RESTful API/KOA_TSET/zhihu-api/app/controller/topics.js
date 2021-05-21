@@ -1,7 +1,7 @@
 const Topics = require('../models/topics')
 const User = require('../models/users')
 const Question = require('../models/questions')
-
+const responesData = require('../utils/responesData')
 class TopicsCtl {
   // 查询话题
   async find(ctx) {
@@ -14,7 +14,12 @@ class TopicsCtl {
       .find({ name: new RegExp(q) })//模糊搜索
       .limit(newPageSize)
       .skip(newCurrent * newPageSize)
-    ctx.body = topics
+    ctx.body = responesData({
+      data: topics,
+      pageSize: pageSize,
+      current: current,
+      total: topics.length
+    })
   }
   // 根据ID查询特定话题
   async findById(ctx) {
@@ -57,8 +62,21 @@ class TopicsCtl {
   }
   // 获取话题下的问题
   async listTopicQuestions(ctx) {
-    const question = await Question.find({ topics: ctx.params.id })
-    ctx.body = question
+    const { pageSize = 10, current = 1 } = ctx.query
+    const newPageSize = Math.max(pageSize * 1, 1)
+    const newCurrent = Math.max(current * 1, 1) - 1
+    const total = await Question.find({ topics: ctx.params.id }).count()
+    const question = await Question
+      .find({ topics: ctx.params.id })
+      .limit(newPageSize)
+      .sort({ updatedAt: -1 })
+      .skip(newCurrent * newPageSize)
+    ctx.body = responesData({
+      data: question,
+      pageSize: pageSize,
+      current: current,
+      total: total
+    })
   }
 }
 

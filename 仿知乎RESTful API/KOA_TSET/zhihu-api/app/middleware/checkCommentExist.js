@@ -1,7 +1,6 @@
 const Comment = require('../models/comments')
 module.exports = async (ctx, next) => {
-  console.log(ctx.params)
-  console.log(ctx.state)
+
   const comment = await Comment.findById(ctx.params.id).select('+commentator +questionId +answerId')
   if (!comment) {
     ctx.throw(404, "评论不存在")

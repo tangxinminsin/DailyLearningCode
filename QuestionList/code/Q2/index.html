@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片懒加载</title>
+</head>
+
+<body>
+  <div class="imgList">
+    <img src="./loading.gif" data-src="https://dpic3.tiankong.com/67/cn/QJ6226943363.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic1.tiankong.com/zt/sg/QJ6235849453.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic1.tiankong.com/ul/ac/QJ6479383109.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic2.tiankong.com/1z/kb/QJ6401246638.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic1.tiankong.com/ut/zj/QJ6634256101.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic.tiankong.com/09/jh/QJ6635714192.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic3.tiankong.com/6k/i5/QJ6727412259.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic2.tiankong.com/av/fc/QJ6872601378.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic.tiankong.com/37/1u/QJ7100086664.jpg@!350h">
+    <img src="./loading.gif" data-src="https://dpic1.tiankong.com/jt/7l/QJ7100510973.jpg@!350h">
+  </div>
+  <script>
+    // 等到全部资源加载完全再加载
+    window.onload = function () {
+      // 获取图片列表
+      var imgs = Array.from(document.querySelectorAll('img'));
+      console.log(imgs)
+      delay();
+      window.addEventListener('scroll', exec(delay, 4000));
+
+      function exec(fun, delaytime) {
+        var timeout, startTime = new Date();
+        return function () {
+          clearTimeout(timeout);
+          tiemout = setTimeout(fun, delaytime);
+        }
+      }
+
+      function delay() {
+        var scrollTop = window.scrollY;
+        var clientHeight = document.documentElement.clientHeight;
+        console.log(clientHeight);
+        imgs.forEach((item, index) => {
+          if (scrollTop == 0 && item.offsetTop <= clientHeight + scrollTop) {
+            //console.log(item.getAttribute('data_img'));
+            item.setAttribute('src', item.getAttribute('data-src'));
+          } else if (item.offsetTop <= clientHeight + scrollTop && item.offsetTop > scrollTop) {
+            item.setAttribute('src', item.getAttribute('data-src'));
+          }
+        });
+      }
+    }
+
+  </script>
+</body>
+
+</html>
