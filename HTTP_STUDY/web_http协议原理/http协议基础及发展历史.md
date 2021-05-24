@@ -136,3 +136,82 @@
 ### 缓存与hash码
 
 当缓存时间过长，静态资源（js,css,html）发生改变时，浏览器仍然读取的是缓存的内容，这时需要给静态文件名加上hash码。当文件发生改变时，文件名发生改变，访问的文件路径发生改变，浏览器则会获取新的静态文件
+
+# 资源验证
+
+## 验证头
+
++ Last-Modified
+  + 上次修改时间
+  + 配合If-Modified-Since或者If-Unmodified-Since使用
+  + 当请求一个资源返回的Header中有Last-Modified并指定了一个时间，在下次浏览器发起请求时会带上这个Last-modified传过来的值,通过If-Modified-Since或者If-Unmodified-Since（很少会被用到）带到服务器上 ，服务器通过读取If-Modified-Since的值对比资源存在的地方，对比上次修改的时间，如果资源没有被修改过则告诉浏览器可以使用上次缓存的资源
++ Etag
+  + 更加严格的验证
+  + 数据签名（资源对内容有唯一的签名（如：对内容进行hash计算））
+  + 配合If-Match或者If-Non-Match使用，值为服务端返回的Etag的值
+  + 对比资源的签名判断是否使用缓存
+
+# Cookie和Session
+
+## Cookie
+
++ 服务端返回数据，通过Set-Cookie设置，并保存在浏览器
++ 下次请求会自动带上
++ 键值对，可以设置多个
+
++ Cookie属性
+  + max-age和expires设置过期时间
+  + 设置Secure，只在https的时候发送
+  + 设置HttpOnly，无法通过document.cookie访问
+
+# Content-Security-Policy  内容安全策略
+
++ 作用
+  + 限制资源获取
+  + 报告资源获取越权
+
++ 限制方式
+
+  + default-src限制全局
+  + 制定资源类型
+    + connect-src
+    + font-src
+    + frame-src
+    + img-src
+    + media-src
+    + srcipt-src
+    + manifest-src
+    + style-src
+    + .....
+
+  + default-src  'self'  同源设置
+
+# Nginx
+
+## 代理配置
+
+```nginx
+// 配置代理服务器缓存
+proxy_cache_path cache（缓存文件夹名称） levels=1:2（可以生成二级目录）keys_zone=my_cache:10m
+server {
+        listen       80;
+        server_name  localhost;
+
+ 
+        location / {
+        	proxy_cache my_cache（缓存文件夹名称）;
+          	proxy_pass 代理服务器地址;
+          	proxy_set_header Host $host;//设置代理服务器地址头，即server_name
+        }
+}
+```
+
++ vary
+  + 设置头信息，只有头信息的值相同的时候代理服务器才进行缓存
+
+## HTTP2与Night配置HTTP2
+
++ HTTP2优势
+  + 信道复用
+  + 分帧传输
+  + Server Push
