@@ -1,0 +1,11 @@
+{
+  "name": "regular",
+  "version": "1.0.0",
+  "description": "",
+  "main": "demo.js",
+  "scripts": {
+    "demo-start": "nodemon demo.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
