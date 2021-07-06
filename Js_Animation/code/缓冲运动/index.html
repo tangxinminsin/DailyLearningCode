@@ -1,0 +1,78 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-07-05 16:37:47
+ * @LastEditTime: 2021-07-06 09:35:52
+ * @LastEditors: tangxinmin
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>缓冲运动</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #root {
+      width: 200px;
+      height: 200px;
+      background: rgb(233, 34, 34);
+      position: relative;
+      left: -200px;
+      top: 0;
+    }
+
+    #root span {
+      width: 20px;
+      height: 50px;
+      background: rgb(0, 217, 255);
+      position: absolute;
+      left: 200px;
+      top: 75px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <span id="btn">按钮</span>
+  </div>
+  <script>
+    window.onload = function () {
+      // 获取id为"root"的元素
+      var onRoot = document.getElementById('root')
+      // 当鼠标放在元素上时
+      onRoot.onmouseover = function () {
+        // 匀速运动方法 ,传入值为偏移量(目标值)
+        start(0)
+      }
+      onRoot.onmouseout = function () {
+        start(-200)
+      }
+    }
+    var timer = null
+    function start(rTarget) {
+      clearInterval(timer);// 每次调用时清空所有定时器，防止开启多个定时器
+      var onRoot = document.getElementById('root')
+      timer = setInterval(function () {
+        var speed = (rTarget - onRoot.offsetLeft) / 10
+        speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed)
+        if (onRoot.offsetLeft === rTarget) {
+          // 如果元素的left值等于目标值，则清空定时器
+          clearInterval(timer);
+        } else {
+          onRoot.style.left = onRoot.offsetLeft + speed + "px"
+        }
+      }, 50)
+    }
+  </script>
+</body>
+
+</html>

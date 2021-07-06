@@ -1,0 +1,64 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-07-06 11:20:42
+ * @LastEditTime: 2021-07-06 14:21:05
+ * @LastEditors: tangxinmin
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>获取样式</title>
+  <style>
+    #root {
+      width: 200px;
+      height: 200px;
+      background: red;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    window.onload = function () {
+      onStart()
+    }
+    var timer = null
+    function onStart() {
+      var onRoot = document.getElementById('root')
+      console.log(onRoot.offsetWidth)//202  width + border
+      clearInterval(timer)
+      timer = setInterval(function () {
+        if (onRoot.offsetWidth > 400) {
+          clearInterval(timer)
+        } else {
+          // onRoot.style.width = onRoot.offsetWidth + 1 + "px"
+          onRoot.style.width = parseInt(getStyle(onRoot, 'width')) + 1 + "px"
+        }
+      }, 30)
+
+    }
+    // 获取准确属性值
+    function getStyle(obj, attr) {
+      if (obj.currentStyle) {
+        // IE浏览器下写法
+        console.log(obj.currentStyle[attr])
+        return obj.currentStyle[attr]
+      } else {
+        // 非IE浏览器（如谷歌、oprea）下写法
+        console.log(getComputedStyle(obj, false)[attr])
+        return getComputedStyle(obj, false)[attr]
+      }
+
+
+    }
+  </script>
+</body>
+
+</html>

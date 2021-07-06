@@ -1,0 +1,75 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-07-06 14:49:35
+ * @LastEditTime: 2021-07-06 15:39:36
+ * @LastEditors: tangxinmin
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>链式运动</title>
+  <style>
+    #root {
+      width: 200px;
+      height: 200px;
+      background: red;
+      border: 4px solid yellow;
+      filter: opacity(30);
+      opacity: 0.3;
+      margin-bottom: 10px;
+    }
+
+    #perfect {
+      width: 200px;
+      height: 200px;
+      background: yellow;
+      border: 4px solid red;
+      filter: opacity(30);
+      opacity: 0.3;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 链式运动 -->
+  <div>链式运动</div>
+  <div id='root'></div>
+  <!-- 同时运动 -->
+  <div>同时运动</div>
+  <div id='perfect'></div>
+  <script src='../运动框架封装/index.js'></script>
+  <script>
+    window.onload = function () {
+      var onRoot = document.getElementById('root')
+      var onPerfect = document.getElementById('perfect')
+      onRoot.onmouseover = function () {
+        startMove(onRoot, { width: 400 }, function () {
+          startMove(onRoot, { height: 400 }, function () {
+            startMove(onRoot, { opacity: 100 })
+          })
+        })
+      }
+      onRoot.onmouseout = function () {
+        startMove(onRoot, { opacity: 30 }, function () {
+          startMove(onRoot, { height: 200 }, function () {
+            startMove(onRoot, { width: 200 })
+          })
+        })
+      }
+
+      onPerfect.onmouseover = function () {
+        startMove(onPerfect, { width: 201, height: 400, opacity: 100 })
+      }
+      onPerfect.onmouseout = function () {
+        startMove(onPerfect, { width: 200, height: 200, opacity: 30 })
+      }
+    }
+  </script>
+</body>
+
+</html>

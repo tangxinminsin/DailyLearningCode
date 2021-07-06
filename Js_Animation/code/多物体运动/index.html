@@ -1,0 +1,78 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-07-06 09:58:04
+ * @LastEditTime: 2021-07-06 11:09:18
+ * @LastEditors: tangxinmin
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多物体</title>
+  <style>
+    body,
+    html {
+      padding: 0;
+      margin: 0;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+
+    ul li {
+      width: 200px;
+      height: 200px;
+      background: red;
+      margin: 10px 0;
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+
+  <script>
+    window.onload = function () {
+      var onRoot = document.getElementsByTagName('li')
+
+      for (var i = 0; i < onRoot.length; i++) {
+        onRoot[i].timer = null
+
+        onRoot[i].onmouseover = function () {
+          onStart(this, 400)
+        }
+        onRoot[i].onmouseout = function () {
+          onStart(this, 200)
+        }
+      }
+    }
+    function onStart(obj, rTarget) {
+      clearInterval(obj.timer)
+      obj.timer = setInterval(function () {
+        var speed = 0
+        if (obj.offsetWidth > rTarget) {
+          speed = -10
+        } else {
+          speed = 10
+        }
+        if (obj.offsetWidth === rTarget) {
+          clearInterval(obj.timer)
+        } else {
+          obj.style.width = obj.offsetWidth + speed + 'px'
+        }
+      }, 30)
+    }
+  </script>
+</body>
+
+</html>

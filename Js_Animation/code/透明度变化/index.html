@@ -1,0 +1,63 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-07-06 09:35:26
+ * @LastEditTime: 2021-07-06 10:03:02
+ * @LastEditors: tangxinmin
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>透明度变化</title>
+  <style>
+    #opacity {
+      width: 200px;
+      height: 200px;
+      background: red;
+      filter: opacity(30);
+      opacity: 0.3;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="opacity"></div>
+  <script>
+    window.onload = function () {
+      var onRoot = document.getElementById('opacity')
+      onRoot.onmouseover = function () {
+        onStart(100)
+      }
+      onRoot.onmouseout = function () {
+        onStart(30)
+      }
+    }
+    var timer = null
+    var alpha = 30
+    function onStart(rTarget) {
+      clearInterval(timer)
+      var onRoot = document.getElementById('opacity')
+      timer = setInterval(function () {
+        var speed = 0
+        if (alpha > rTarget) {
+          speed = -10
+        } else {
+          speed = 10
+        }
+        if (alpha === rTarget) {
+          clearInterval(timer)
+        } else {
+          alpha += speed
+          onRoot.style.filter = 'opacity(alpha)'
+          onRoot.style.opacity = alpha / 100
+        }
+      }, 30)
+    }
+  </script>
+</body>
+
+</html>
