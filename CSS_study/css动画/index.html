@@ -1,0 +1,65 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-07-07 15:45:16
+ * @LastEditTime: 2021-07-08 18:10:20
+ * @LastEditors: tangxinmin
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>css动画</title>
+  <style>
+    .container {
+      width: 200px;
+      height: 200px;
+      background: red;
+      margin-bottom: 10px;
+      transition: all 1s 1s;
+      transition-timing-function: linear;
+      /* transition-delay: 1s; */
+    }
+
+    .container:hover {
+      width: 800px;
+      background: yellow;
+      transform: rotate(10deg);
+    }
+
+    .container_two {
+      width: 200px;
+      height: 200px;
+      background: red;
+      animation: run 2s ease-in-out;
+      animation-iteration-count: infinite;
+
+    }
+
+    @keyframes run {
+      0% {
+        width: 200px;
+      }
+
+      50% {
+        width: 800px;
+      }
+
+      100% {
+        width: 200PX;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 补间动画 -->
+  <div id='root' class="container"></div>
+  <!-- 关键帧动画 -->
+  <div class="container_two"></div>
+</body>
+
+</html>
