@@ -1,0 +1,75 @@
+<!--
+ * @Author: tangxinmin
+ * @Date: 2021-09-15 10:23:43
+ * @LastEditors: tangxinmin
+ * @LastEditTime: 2021-09-15 11:43:58
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id='clock' style="border: 1px solid #aaa;display: block;margin: 50px auto;"></canvas>
+  <script>
+    // canvas基于状态(属性)进行绘制
+    window.onload = function () {
+      var canvas = document.getElementById("clock")
+      canvas.width = 1024
+      canvas.height = 768
+      if (canvas.getContext('2d')) {
+        console.log(canvas.getContext('2d'))
+        var context = canvas.getContext('2d')
+        // 绘制直线
+        context.beginPath();//和其他路径分开
+        context.moveTo(100, 100)//起始点（x,y）
+        context.lineTo(200, 100)// z终点
+        context.lineTo(100, 200)
+        context.lineTo(100, 100)
+        context.lineWidth = 3 // 线条粗细
+        context.strokeStyle = '#19d7dc' // 线条颜色
+        context.fillStyle = 'rgba(255, 0, 0, .5)'//图形填充样式
+        context.closePath(); // 闭合路径,形成闭合区域
+
+        context.stroke() // 绘制描边
+        context.fill() // 路径填充-不指定fillStyle默认黑色
+
+        context.beginPath();
+        context.moveTo(300, 100)
+        context.lineTo(200, 200)
+        context.lineWidth = 3 // 线条粗细
+        context.strokeStyle = 'red' // 线条颜色
+        context.closePath();
+
+        context.stroke() // 绘制描边
+
+        //绘制弧线
+        console.log(Math.PI)
+        context.beginPath();
+        context.lineWidth = 3 // 线条粗细
+        context.strokeStyle = '#005588' // 线条颜色
+        context.arc(400, 100, 50, 0, Math.PI / 2, true);
+        // context.closePath();
+        context.stroke();
+        // 登录状态下不会出现这行文字，点击页面右上角一键登录
+      } else {
+        alert('当前浏览器不支持Canvas')
+      }
+    }
+  </script>
+</body>
+
+</html>
